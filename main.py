@@ -219,16 +219,21 @@ class SVG_Pen(Pen):
 class Points(Pen):
     def __init__(self) -> None:
         super().__init__()
-        self.points = []
+        self.__points = []
 
     def forward(self, dist):
         newpos = (self._pos[0] + dist * sin(self._rot), self._pos[1] + dist * cos(self._rot))
         self._pos = newpos
         if self._isdrawing:
-            self.points.append(newpos)
+            self.__points.append(newpos)
 
     def goto(self, x, y):
         self._pos = x, y
         if self._isdrawing:
-            self.points.append((x, y))
+            self.__points.append((x, y))
 
+    def get_points(self):
+        return self.__points
+
+    def flush_points(self):
+        self.__points = []
